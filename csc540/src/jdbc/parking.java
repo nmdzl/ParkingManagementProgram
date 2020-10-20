@@ -289,7 +289,7 @@ public class parking {
 			String Query = "\nINSERT INTO SPACES VALUES('" + lname + "'," + snumber + ",'" + stype + "'," + "'" + szone + "', 0)\n";
 			System.out.println(Query);
             rs = statement.executeQuery(Query);
-		    System.out.println("Parking ZONE " + zid + " successfully created!");
+		    System.out.println("Parking space " + lname + "#" + snumber + " successfully assigned!");
 		    System.out.println("----------------------------");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -314,7 +314,7 @@ public class parking {
 			System.out.println(Query);
             rs = statement.executeQuery(Query);
 		    System.out.println("Parking Lot " + lname + " successfully assigned Zone " + zid + "!");
-		    System.out.println("----------------------------");s
+		    System.out.println("----------------------------");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
