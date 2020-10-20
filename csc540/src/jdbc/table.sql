@@ -95,7 +95,7 @@ create table Citation(
     CHH number(2) not null, 
     CMM number(2) not null, 
     VCAT varchar2(20) not null, 
-    FEE number(2) not null, 
+    FEE decimal(4,2) not null, 
     DUE date not null, 
     STATUS varchar2(10) not null 
     );
