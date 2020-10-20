@@ -59,7 +59,14 @@ public class parking {
 	    	        String s1 = "";
 	    	        while (key) {
 	    	        	System.out.println("\n--------------------HELLO ADMIN!--------------------\n");
-	    	            System.out.println(" m - Return to Main Menu");
+	    	        	System.out.println(" 0 - Add new parking lot");
+	    	        	System.out.println(" 1 - Assign zone to lot");
+	    	        	System.out.println(" 2 - Assign type to space");
+	    	        	System.out.println(" 3 - Assign permit");
+	    	        	System.out.println(" 4 - Check visitor valid parking");
+	    	        	System.out.println(" 5 - Check non-visitor valid parking");
+	    	        	System.out.println(" 6 - Issue new citation");
+	    	        	System.out.println(" m - Return to Main Menu");
 	    	            try {
 	    	            	System.out.println("\nEnter number to perform actions: ");
 	    	            	s1 = in.nextLine();
@@ -67,6 +74,65 @@ public class parking {
 	    	                System.out.println("Invaild input, please try again");
 	    	            }
 	    	            if(s1.equals("m")) {
+	    	            	k = false;
+	    	            	break;
+	    	            }
+	    	            if(s1.equals("0")) {
+	    	            	System.out.println("\n--------------------ADD LOT--------------------\n");
+	    	            	System.out.println("\nPlease enter the name of the parking lot");
+	    	            	String lname = in.nextLine();
+	    	            	System.out.println("\nPlease enter the address of the parking lot");
+	    	            	String ladd = in.nextLine();
+	    	            	int ls = 0;
+	    	            	while (ls <= 0) {
+	    	            		System.out.println("\nPlease enter the # of spaces of the parking lot");
+		    	            	String st = in.nextLine();
+		    	            	try {
+		    	            		ls = Integer.valueOf(st);
+		    	            	} catch (Exception e) {
+		    	            		System.out.println("Invalid input");
+		    	            	}
+	    	            	}
+	    	            	int lv = -1;
+	    	            	while (lv < 0) {
+	    	            		System.out.println("\nPlease enter the # of visitor spaces of the parking lot");
+		    	            	String st = in.nextLine();
+		    	            	try {
+		    	            		lv = Integer.valueOf(st);
+		    	            	} catch (Exception e) {
+		    	            		System.out.println("Invalid input");
+		    	            	}
+	    	            	}
+	    	            	
+	    	            	System.out.println("\nPlease enter the addition notes of the parking lot");
+	    	            	String lnotes = in.nextLine();
+	    	            	addlot(lname, ladd,ls,lv,lnotes);
+	    	            }
+	    	            if(s1.equals("1")) {
+	    	            	k = false;
+	    	            	break;
+	    	            }
+	    	            if(s1.equals("2")) {
+	    	            	k = false;
+	    	            	break;
+	    	            }
+	    	            if(s1.equals("3")) {
+	    	            	k = false;
+	    	            	break;
+	    	            }
+	    	            if(s1.equals("4")) {
+	    	            	k = false;
+	    	            	break;
+	    	            }
+	    	            if(s1.equals("5")) {
+	    	            	k = false;
+	    	            	break;
+	    	            }
+	    	            if(s1.equals("6")) {
+	    	            	k = false;
+	    	            	break;
+	    	            }
+	    	            if(s1.equals("7")) {
 	    	            	k = false;
 	    	            	break;
 	    	            }
@@ -193,6 +259,16 @@ public class parking {
 				con.close();
 			}
 		}
+	}
+	private static void addlot(String lname, String ladd, int ls, int lv, String lnotes) {
+		try {
+            rs = statement.executeQuery("INSERT INTO LOTS VALUES('" + lname + "','" + ladd + "'," + ls + "," + lv + ",'" + lnotes + "'" );
+		    System.out.println("Parking Lot " + lname + "successfully added.");
+		    System.out.println("----------------------------");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 	private static void showzone() throws SQLException {
 		try {
