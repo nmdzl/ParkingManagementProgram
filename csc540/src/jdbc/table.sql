@@ -13,10 +13,12 @@ CREATE TABLE ZONES(
     );
 
 CREATE TABLE SPACES(
-	LOT varchar(40) references LOTS(LNAME),
-	stype varchar(40) not null,
-	category varchar(40) not null
+LOT varchar(40) references LOTS(LNAME),
+sid number(5) not null,
+stype varchar(40) not null,
+category varchar(40) not null
 );
+
 
 
 CREATE TABLE LHASZ (   
