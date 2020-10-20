@@ -60,12 +60,13 @@ public class parking {
 	    	        while (key) {
 	    	        	System.out.println("\n--------------------HELLO ADMIN!--------------------\n");
 	    	        	System.out.println(" 0 - Add new parking lot");
-	    	        	System.out.println(" 1 - Assign zone to lot");
-	    	        	System.out.println(" 2 - Assign type to space");
-	    	        	System.out.println(" 3 - Assign permit");
-	    	        	System.out.println(" 4 - Check visitor valid parking");
-	    	        	System.out.println(" 5 - Check non-visitor valid parking");
-	    	        	System.out.println(" 6 - Issue new citation");
+	    	        	System.out.println(" 1 - Add new parking zone");
+	    	        	System.out.println(" 2 - Assign zone to lot");
+	    	        	System.out.println(" 3 - Assign type to space");
+	    	        	System.out.println(" 4 - Assign permit");
+	    	        	System.out.println(" 5 - Check visitor valid parking");
+	    	        	System.out.println(" 6 - Check non-visitor valid parking");
+	    	        	System.out.println(" 7 - Issue new citation");
 	    	        	System.out.println(" m - Return to Main Menu");
 	    	            try {
 	    	            	System.out.println("\nEnter number to perform actions: ");
@@ -108,13 +109,19 @@ public class parking {
 	    	            	String lnotes = in.nextLine();
 	    	            	addlot(lname, ladd,ls,lv,lnotes);
 	    	            }
-	    	            if(s1.equals("1")) {
-	    	            	k = false;
-	    	            	break;
-	    	            }
 	    	            if(s1.equals("2")) {
-	    	            	k = false;
-	    	            	break;
+	    	            	System.out.println("\n--------------------ASSIGN ZONE--------------------\n");
+	    	            	System.out.println("\nPlease enter the name of the parking lot");
+	    	            	String lname = in.nextLine();
+	    	            	System.out.println("\nPlease enter the ID of the parking ZONE");
+	    	            	String zid = in.nextLine();
+	    	            	zoneToLot(lname, zid);
+	    	            }
+	    	            if(s1.equals("1")) {
+	    	            	System.out.println("\n--------------------ADD ZONE--------------------\n");
+	    	            	System.out.println("\nPlease enter the ID of the parking ZONE");
+	    	            	String zid = in.nextLine();
+	    	            	addZone(zid);
 	    	            }
 	    	            if(s1.equals("3")) {
 	    	            	k = false;
@@ -260,9 +267,33 @@ public class parking {
 			}
 		}
 	}
+	private static void addZone(String zid) {
+		try {
+			String Query = "\nINSERT INTO ZONES VALUES('" + zid + "')\n";
+			System.out.println(Query);
+            rs = statement.executeQuery(Query);
+		    System.out.println("Parking ZONE " + zid + "successfully created!");
+		    System.out.println("----------------------------");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	private static void zoneToLot(String lname, String zid) {
+		try {
+			String Query = "\nINSERT INTO LHASZ VALUES('" + zid + "'" + ",'" + lname + "')\n";
+			System.out.println(Query);
+            rs = statement.executeQuery(Query);
+		    System.out.println("Parking Lot " + lname + "successfully assigned Zone " + zid + "!");
+		    System.out.println("----------------------------");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	private static void addlot(String lname, String ladd, int ls, int lv, String lnotes) {
 		try {
-			String Query = "INSERT INTO LOTS VALUES('" + lname + "'" + ",'" + ladd + "'," + ls + "," + lv + ",'" + lnotes + "')";
+			String Query = "\nINSERT INTO LOTS VALUES('" + lname + "'" + ",'" + ladd + "'," + ls + "," + lv + ",'" + lnotes + "')\n";
 			System.out.println(Query);
             rs = statement.executeQuery(Query);
 		    System.out.println("Parking Lot " + lname + "successfully added.");
