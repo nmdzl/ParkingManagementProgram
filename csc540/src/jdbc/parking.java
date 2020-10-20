@@ -262,7 +262,7 @@ public class parking {
 	}
 	private static void addlot(String lname, String ladd, int ls, int lv, String lnotes) {
 		try {
-            rs = statement.executeQuery("INSERT INTO LOTS VALUES('" + lname + "','" + ladd + "'," + ls + "," + lv + ",'" + lnotes + "'" );
+            rs = statement.executeQuery("INSERT INTO LOTS VALUES('" + lname + "'" + ",'" + ladd + "'," + ls + "," + lv + ",'" + lnotes + "'" );
 		    System.out.println("Parking Lot " + lname + "successfully added.");
 		    System.out.println("----------------------------");
 		} catch (Exception e) {
