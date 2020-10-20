@@ -20,8 +20,9 @@ public class parking {
 	private static Connection con = null;
 	private static Statement statement = null;
 	private static Scanner in;
+	private static ResultSet rs = null;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 		try {
 			connectDB();
 			dropAllTables();
@@ -138,12 +139,16 @@ public class parking {
 	    	        String s1 = "";
 	    	        while (key) {
 	    	        	System.out.println("\n--------------------HELLO SAMPLE!--------------------\n");
+	    	        	System.out.println(" 0 - Show parking zone");
 	    	            System.out.println(" m - Return to Main Menu");
 	    	            try {
 	    	            	System.out.println("\nEnter number to perform actions: ");
 	    	            	s1 = in.nextLine();
 	    	            } catch (Exception InputMismatchException ) {
 	    	                System.out.println("Invaild input, please try again");
+	    	            }
+	    	            if(s1.equals("0")) {
+	    	            	showzone();
 	    	            }
 	    	            if(s1.equals("m")) {
 	    	            	k = false;
@@ -180,7 +185,29 @@ public class parking {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}finally {
+			// close file reader
+			in.close();
+			// close db connection
+			if (con != null) {
+				con.close();
+			}
 		}
+	}
+	private static void showzone() throws SQLException {
+		try {
+            rs = statement.executeQuery("SELECT * FROM LHASZ");
+		    System.out.println("Zone    Parking Lot");
+		    System.out.println("----------------------------");
+    		while (rs.next()) {
+    		    String s = rs.getString("ZID");
+    		    String p = rs.getString("LNAME");
+    		    System.out.println(s + "   " + p);
+    		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		
 	}
 	static void connectDB() throws IOException, SQLException {
 
@@ -206,7 +233,7 @@ public class parking {
 		try {
 			final List<String> table = SQLFileCache.getInstance().getQueries( "table.sql" );
 	        executeSQL( table, con );
-            ResultSet rs = null;
+            
             rs = statement.executeQuery("SELECT table_name FROM user_tables");
     		while (rs.next()) {
     		    String s = rs.getString("table_name");
@@ -217,20 +244,10 @@ public class parking {
 	        System.out.println("Value inserted");
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			// close file reader
-			if (reader != null) {
-				reader.close();
-			}
-			// close db connection
-			if (con != null) {
-				con.close();
-			}
-		}
-	   }
+		} 
+	}
 	private static void executeSQL ( final List<String> queries, Connection conn ) throws SQLException, IOException {
 
-        final long start = System.currentTimeMillis();
         for ( final String sql : queries ) {
             final Statement stmt = conn.createStatement();
             try {
