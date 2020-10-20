@@ -16,7 +16,8 @@ CREATE TABLE SPACES(
 LOT varchar(40) references LOTS(LNAME),
 sid number(5) not null,
 stype varchar(40) not null,
-category varchar(40) not null
+category varchar(10) references ZONES(ZID),
+sstatus number(1) not null
 );
 
 

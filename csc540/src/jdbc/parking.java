@@ -124,8 +124,25 @@ public class parking {
 	    	            	addZone(zid);
 	    	            }
 	    	            if(s1.equals("3")) {
-	    	            	k = false;
-	    	            	break;
+	    	            	System.out.println("\n--------------------ASSIGN SPACE--------------------\n");
+	    	            	System.out.println("\nPlease enter the name of the parking lot");
+	    	            	String lname = in.nextLine();
+	    	            	System.out.println("\nPlease enter the # of the parking space");
+	    	            	int snumber = 0;
+	    	            	while (snumber <= 0) {
+	    	            		System.out.println("\nPlease enter the # of the parking space");
+		    	            	String st = in.nextLine();
+		    	            	try {
+		    	            		snumber = Integer.valueOf(st);
+		    	            	} catch (Exception e) {
+		    	            		System.out.println("Invalid input");
+		    	            	}
+	    	            	}
+	    	            	System.out.println("\nPlease enter the type of the parking space");
+	    	            	String stype = in.nextLine();
+	    	            	System.out.println("\nPlease enter the ZONE ID of the parking space");
+	    	            	String szone = in.nextLine();
+	    	            	assignSpace(lname,snumber,stype,szone);
 	    	            }
 	    	            if(s1.equals("4")) {
 	    	            	k = false;
@@ -267,12 +284,24 @@ public class parking {
 			}
 		}
 	}
+	private static void assignSpace(String lname, int snumber, String stype, String szone) {
+		try {
+			String Query = "\nINSERT INTO SPACES VALUES('" + lname + "'," + snumber + ",'" + stype + "'," + "'" + szone + "', 0)\n";
+			System.out.println(Query);
+            rs = statement.executeQuery(Query);
+		    System.out.println("Parking ZONE " + zid + " successfully created!");
+		    System.out.println("----------------------------");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	private static void addZone(String zid) {
 		try {
 			String Query = "\nINSERT INTO ZONES VALUES('" + zid + "')\n";
 			System.out.println(Query);
             rs = statement.executeQuery(Query);
-		    System.out.println("Parking ZONE " + zid + "successfully created!");
+		    System.out.println("Parking ZONE " + zid + " successfully created!");
 		    System.out.println("----------------------------");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -284,8 +313,8 @@ public class parking {
 			String Query = "\nINSERT INTO LHASZ VALUES('" + zid + "'" + ",'" + lname + "')\n";
 			System.out.println(Query);
             rs = statement.executeQuery(Query);
-		    System.out.println("Parking Lot " + lname + "successfully assigned Zone " + zid + "!");
-		    System.out.println("----------------------------");
+		    System.out.println("Parking Lot " + lname + " successfully assigned Zone " + zid + "!");
+		    System.out.println("----------------------------");s
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -296,7 +325,7 @@ public class parking {
 			String Query = "\nINSERT INTO LOTS VALUES('" + lname + "'" + ",'" + ladd + "'," + ls + "," + lv + ",'" + lnotes + "')\n";
 			System.out.println(Query);
             rs = statement.executeQuery(Query);
-		    System.out.println("Parking Lot " + lname + "successfully added.");
+		    System.out.println("Parking Lot " + lname + " successfully added.");
 		    System.out.println("----------------------------");
 		} catch (Exception e) {
 			e.printStackTrace();
