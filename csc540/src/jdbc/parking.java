@@ -295,6 +295,7 @@ public class parking {
             //statement.executeUpdate("SET FOREIGN_KEY_CHECKS=0;");
 
             statement.executeUpdate("DROP TABLE LOTS CASCADE CONSTRAINTS");
+            statement.executeUpdate("DROP TABLE SPACES CASCADE CONSTRAINTS");
             statement.executeUpdate("DROP TABLE ZONES CASCADE CONSTRAINTS");
             statement.executeUpdate("DROP TABLE LHASZ CASCADE CONSTRAINTS");
             statement.executeUpdate("DROP TABLE VEHICLES CASCADE CONSTRAINTS");

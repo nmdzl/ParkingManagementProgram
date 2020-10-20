@@ -12,6 +12,15 @@ CREATE TABLE ZONES(
     CONSTRAINT zone_pk PRIMARY KEY (ZID) 
     );
 
+CREATE TABLE SPACES(
+LOT varchar(40) references LOTS(LNAME),
+sid number(5) not null,
+stype varchar(40) not null,
+category varchar(40) not null
+);
+
+
+
 CREATE TABLE LHASZ (   
     ZID varchar(4),  
     constraint fk_zid foreign key(ZID) references ZONES(ZID),  
