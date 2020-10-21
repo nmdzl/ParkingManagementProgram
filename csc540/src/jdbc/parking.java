@@ -492,7 +492,7 @@ public class parking {
 					String s1 = "";
 					while (key) {
 						System.out.println("\n--------------------HELLO REPORT!--------------------\n");
-						System.out.println(" 1 - Report the number of citations in all lots during last 30 days");
+						System.out.println(" 1 - Report the number of citations in all lots for a three month period (07/01/2020 - 09/30/2020)");
 						System.out.println(" 2 - Report the number of visitor permits of different permit type");
 						System.out.println(" 3 - Report the total revenue generated for all visitor's parking zones");
 						System.out.println(" m - Return to Main Menu");
@@ -1086,9 +1086,9 @@ public class parking {
 	private static void citationNumberInAllLots() throws SQLException {
 		try {
 			rs = statement.executeQuery(
-					"SELECT LNAME, COUNT(*) FROM Citation WHERE MONTHS_BETWEEN(CDATE, SYSDATE) <= 1 GROUP BY LNAME ORDER BY LNAME");
-			System.out.println("Lot Name | Citation Number");
-			System.out.println("-----------------------------");
+					"SELECT LNAME, COUNT(*) FROM Citation WHERE CDATE >= '01-JUL-20' AND CDATE <= '30-SEP-20' GROUP BY LNAME ORDER BY LNAME");
+			System.out.println("Lot Name | Number of Citations");
+			System.out.println("---------------------------------");
 			while (rs.next()) {
 				String lname = rs.getString("LNAME");
 				String count = rs.getString("COUNT(*)");
