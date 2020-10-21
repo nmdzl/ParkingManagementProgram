@@ -59,25 +59,255 @@ public class parking {
 	            if(s.equals("q")) {
 	            	key = false;
 	            }
-	            //admin
-	            if(s.equals("0")) {
-	    	        boolean k = true;
-	    	        String s1 = "";
-	    	        while (key) {
-	    	        	System.out.println("\n--------------------HELLO ADMIN!--------------------\n");
-	    	            System.out.println(" m - Return to Main Menu");
-	    	            try {
-	    	            	System.out.println("\nEnter number to perform actions: ");
-	    	            	s1 = in.nextLine();
-	    	            } catch (Exception InputMismatchException ) {
-	    	                System.out.println("Invaild input, please try again");
-	    	            }
-	    	            if(s1.equals("m")) {
-	    	            	k = false;
-	    	            	break;
-	    	            }
-	    	        }
-	            }
+				// admin
+				if (s.equals("0")) {
+					boolean k = true;
+					String s1 = "";
+					while (key) {
+						System.out.println("\n--------------------HELLO ADMIN!--------------------\n");
+						System.out.println(" 0 - Add new parking lot");
+						System.out.println(" 1 - Add new parking zone");
+						System.out.println(" 2 - Assign zone to lot");
+						System.out.println(" 3 - Assign type to space");
+						System.out.println(" 4 - Assign permit");
+						System.out.println(" 5 - Check visitor valid parking");
+						System.out.println(" 6 - Check non-visitor valid parking");
+						System.out.println(" 7 - Issue new citation");
+						System.out.println(" m - Return to Main Menu");
+						try {
+							System.out.println("\nEnter number to perform actions: ");
+							s1 = in.nextLine();
+						} catch (Exception InputMismatchException) {
+							System.out.println("Invaild input, please try again");
+						}
+						if (s1.equals("m")) {
+							k = false;
+							break;
+						}
+						if (s1.equals("0")) {
+							System.out.println("\n--------------------ADD LOT--------------------\n");
+							System.out.println("\nPlease enter the name of the parking lot");
+							String lname = in.nextLine();
+							System.out.println("\nPlease enter the address of the parking lot");
+							String ladd = in.nextLine();
+							int ls = -2;
+							int lv = -1;
+							while (lv > ls || ls <= 0 || lv < 0) {
+								System.out.println("\nPlease enter the # of spaces of the parking lot");
+								String st = in.nextLine();
+								try {
+									ls = Integer.valueOf(st);
+								} catch (Exception e) {
+									System.out.println("Invalid input");
+								}
+
+								System.out.println("\nPlease enter the # of visitor spaces of the parking lot");
+								String str = in.nextLine();
+								try {
+									lv = Integer.valueOf(str);
+								} catch (Exception e) {
+									System.out.println("Invalid input");
+								}
+
+								if (lv > ls) {
+									System.out.println(
+											"\nWarning! The visitor spaces cannot larger than the parking spaces!");
+								}
+							}
+							System.out.println("\nPlease enter the addition notes of the parking lot");
+							String lnotes = in.nextLine();
+							addlot(lname, ladd, ls, lv, lnotes);
+						}
+						if (s1.equals("2")) {
+							System.out.println("\n--------------------ASSIGN ZONE--------------------\n");
+							System.out.println("\nPlease enter the name of the parking lot");
+							String lname = in.nextLine();
+							System.out.println("\nPlease enter the ID of the parking ZONE");
+							String zid = in.nextLine();
+							zoneToLot(lname, zid);
+						}
+						if (s1.equals("1")) {
+							System.out.println("\n--------------------ADD ZONE--------------------\n");
+							System.out.println("\nPlease enter the ID of the parking ZONE");
+							String zid = in.nextLine();
+							addZone(zid);
+						}
+						if (s1.equals("3")) {
+							System.out.println("\n--------------------ASSIGN SPACE--------------------\n");
+							System.out.println("\nPlease enter the name of the parking lot");
+							String lname = in.nextLine();
+							// System.out.println("\nPlease enter the # of the parking space");
+							int snumber = 0;
+							while (snumber <= 0) {
+								System.out.println("\nPlease enter the # of the parking space");
+								String st = in.nextLine();
+								try {
+									snumber = Integer.valueOf(st);
+								} catch (Exception e) {
+									System.out.println("Invalid input");
+								}
+							}
+
+							System.out.println("\nPlease enter the type of the parking space");
+							String stype = in.nextLine();
+							System.out.println("\nPlease enter the ZONE ID of the parking space");
+							String szone = in.nextLine();
+							assignSpace(lname, snumber, stype, szone);
+						}
+						if (s1.equals("4")) {
+							while (true) {
+								System.out.println("\n--------------------ASSIGN PERMITS--------------------\n");
+								System.out.println(" 1 - Employee Permit");
+								System.out.println(" 2 - Student Permit");
+								System.out.println(" 3 - Add vehicle for existing Employee Permit");
+								System.out.println(" 4 - Add Vehicle");
+								System.out.println(" b - Back to ADMIN Menu");
+								try {
+									System.out.println("\nEnter number to perform actions: ");
+									s1 = in.nextLine();
+								} catch (Exception InputMismatchException) {
+									System.out.println("Invaild input, please try again");
+								}
+
+								if (s1.equals("b")) {
+									break;
+								}
+								if (s1.equals("1")) {
+									System.out.println("\n--------------------ASSIGN EPERMIT--------------------\n");
+									
+									int uid = 0;
+									while (uid < 1000000 || uid > 9999999) {
+										System.out.println("\nPlease enter the UnivID of the Permit(between 1000000 - 9999999):");
+										String st = in.nextLine();
+										try {
+											uid = Integer.valueOf(st);
+										} catch (Exception e) {
+											System.out.println("Invalid input");
+										}
+									}
+									System.out.println("\nPlease enter the car plate of the Permit");
+									String plate = in.nextLine();
+									System.out.println("\nPlease enter the Zone of the Permit");
+									String zone = in.nextLine();
+									System.out.println("\nPlease enter the vehicle type of the Permit");
+									String vtype = in.nextLine();
+									System.out.println("\nPlease enter the start date of the Permit(YYYY-MM-DD)");
+									String sdate = in.nextLine();
+									assignEPermit(plate,uid,zone,vtype,sdate);
+								}
+								if (s1.equals("2")) {
+									System.out.println("\n--------------------ASSIGN NEPERMIT--------------------\n");
+									
+									int uid = 0;
+									while (uid < 1000000 || uid > 9999999) {
+										System.out.println("\nPlease enter the UnivID of the Permit(between 1000000 - 9999999):");
+										String st = in.nextLine();
+										try {
+											uid = Integer.valueOf(st);
+										} catch (Exception e) {
+											System.out.println("Invalid input");
+										}
+									}
+									System.out.println("\nPlease enter the car plate of the Permit");
+									String plate = in.nextLine();
+									System.out.println("\nPlease enter the Zone of the Permit");
+									String zone = in.nextLine();
+									System.out.println("\nPlease enter the vehicle type of the Permit");
+									String vtype = in.nextLine();
+									System.out.println("\nPlease enter the start date of the Permit(YYYY-MM-DD)");
+									String sdate = in.nextLine();
+									assignNEPermit(plate,uid,zone,vtype,sdate);
+								}
+								if (s1.equals("3")) {
+									System.out.println("\n--------------------ADD VEHICLE TO EPERMITS--------------------\n");
+									System.out.println("\nPlease enter the plate# of the vehicle");
+									String vid = in.nextLine();
+									System.out.println("\nPlease enter the epermit number");
+									String pid = in.nextLine();
+									addVtoE(vid, pid);
+								}
+								if (s1.equals("4")) {
+									System.out.println("\n--------------------ADD VEHICLE--------------------\n");
+									System.out.println("\nPlease enter the plate# of the vehicle");
+									String pid = in.nextLine();
+									System.out.println("\nPlease enter the Manufacture of the vehicle");
+									String mfc = in.nextLine();
+									System.out.println("\nPlease enter the Model of the vehicle");
+									String mdl = in.nextLine();
+									int vy = 0;
+									while (vy <= 1900 || vy >= 2021) {
+										System.out.println("\nPlease enter the Year of the vehicle");
+										String st = in.nextLine();
+										try {
+											vy = Integer.valueOf(st);
+										} catch (Exception e) {
+											System.out.println("Invalid input year");
+										}
+									}
+									System.out.println("\nPlease enter the color of the vehicle");
+									String vc = in.nextLine();
+									
+									addVehicle(pid,mfc,mdl,vy,vc);
+									
+								}
+
+							}
+
+						}
+						if (s1.equals("5")) {
+							System.out.println("\n--------------------CHECK VPARKING--------------------\n");
+							System.out.println("\nPlease enter the name of the parking lot");
+							String lname = in.nextLine();
+							int snumber = 0;
+							while (snumber <= 0) {
+								System.out.println("\nPlease enter the # of the parking space");
+								String st = in.nextLine();
+								try {
+									snumber = Integer.valueOf(st);
+								} catch (Exception e) {
+									System.out.println("Invalid input");
+								}
+							}
+							System.out.println("\nPlease enter the plate of the visitor vehicle");
+							String plate = in.nextLine();
+							
+							if (checkVV(lname,snumber,plate)) {
+								System.out.println("Valid Visitor Parking!");
+							} else {
+								System.out.println("Invalid Visitor Parking!");
+							}
+						}
+						if (s1.equals("6")) {
+							System.out.println("\n--------------------CHECK NVPARKING--------------------\n");
+							System.out.println("\nPlease enter the name of the parking lot");
+							String lname = in.nextLine();
+							
+							System.out.println("\nPlease enter the plate of the vehicle");
+							String plate = in.nextLine();
+							
+							if (checkNVV(lname,plate)) {
+								System.out.println("Valid Parking!");
+							} else {
+								System.out.println("Invalid Parking!");
+							}
+						}
+						if (s1.equals("7")) {
+							System.out.println("\n--------------------ISSUE CIATATION--------------------\n");				
+							System.out.println("\nPlease enter the plate of the vehicle");
+							String plate = in.nextLine();
+							System.out.println("\nPlease enter the Model of the vehicle");
+							String model = in.nextLine();
+							System.out.println("\nPlease enter the Color of the vehicle");
+							String color = in.nextLine();
+							System.out.println("\nPlease enter the name of the parking Lot");
+							String lname = in.nextLine();
+							System.out.println("\nPlease enter the category of the citation");
+							String cat = in.nextLine();
+							
+							addCitation(plate,model,color,lname,cat);
+						}
+					}
+				}
 	            
 	            //emp
 	            if(s.equals("1")) {
@@ -401,6 +631,348 @@ public class parking {
 				con.close();
 			}
 		}
+	}
+		private static void addCitation(String plate, String model, String color, String lname, String cat) {
+		// TODO Auto-generated method stub
+		try {
+			String Q = "SELECT COUNT(*) FROM CITATION";
+
+			rs = statement.executeQuery(Q);
+			int capa = 0;
+			if (rs.next()) {
+				capa = rs.getInt("COUNT(*)");
+			}
+			String cid = "1";
+			LocalDateTime date = LocalDateTime.now();
+			DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+		    int chh = date.getHour();
+		    int cmm = date.getMinute();
+		    String sdate = date.format(myFormatObj);
+		    String ddate = date.plusMonths(1).format(myFormatObj); 
+			String hex = Integer.toHexString(capa);
+			int zs = 4 - hex.length();
+			for (int i = 0; i < zs; i++) {
+				cid = cid + 0;
+			}
+			int fee = 20;
+			if (cat.equals("Invalid Permit")) {
+				fee = 20;
+			}
+			else if(cat.equals("Expired Permit")) {
+				fee = 25;
+			}
+			else if(cat.equals("No Permit")) {
+				
+			}
+			cid = cid + hex;
+			String Query = "\nINSERT INTO CITATION VALUES('" + cid + "'," + "'" + plate + "'," + "'" + model + "'," + "'" + color + "',"  + "'" + sdate + "'," + "'" + lname + "'," + chh + "," + cmm + ",'" + cat +"'," + fee + ",'" + ddate + "',"+"'Unpaid" +"')";
+			System.out.println(Query);
+			rs = statement.executeQuery(Query);
+			System.out.println("Citation for " + plate + " successfully assigned!");
+			System.out.println("----------------------------");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	private static boolean checkNVV(String lname, String plate) {
+		// TODO Auto-generated method stub
+		try {
+			String Q = "SELECT COUNT(*) FROM EHASV WHERE PLATE = '" + plate + "'" ;
+
+			rs = statement.executeQuery(Q);
+			if (rs.next()) {
+				int capa = rs.getInt("COUNT(*)");
+				if(capa > 0) {
+					
+					return true;
+				}
+			}
+			
+			Q = "SELECT COUNT(*) FROM EPERMITS WHERE PLATE = '" + plate + "'" ;
+
+			rs = statement.executeQuery(Q);
+			if (rs.next()) {
+				int capa = rs.getInt("COUNT(*)");
+				if(capa > 0) {	
+					return true;
+				}
+			}
+			
+			String QV = "SELECT * FROM NEPERMITS WHERE PVNUMBER = '" + plate + "'" ;
+
+			rs = statement.executeQuery(QV);
+			LocalDateTime late = null;
+			int hour = 0;
+			int minute = 0;
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			while (rs.next()) {
+				String exp = rs.getString("ENDDATE");
+				hour = rs.getInt("EXPHOUR");
+				minute = rs.getInt("EXPMINUTE");
+				
+				LocalDateTime t = LocalDateTime.parse(exp, formatter);
+				if(late != null) {
+					if(late.compareTo(t) < 0) {
+						late = t;
+					}
+				}
+				else {
+					late = t;
+				}
+			}				
+			late = late.plusHours(hour).plusMinutes(minute);
+			LocalDateTime current = LocalDateTime.now();
+			
+			if(current.compareTo(late) < 0) {
+				System.out.println("Expired Permit");
+				return false;
+			}
+			else return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		System.out.println("No Permit");
+		return false;
+	}
+
+	private static boolean checkVV(String lname, int snumber, String plate) {
+		// TODO Auto-generated method stub
+		try {			
+			String Q = "SELECT CATEGORY FROM SPACES WHERE LOT = '" + lname + "' AND sid = " + snumber;
+			rs = statement.executeQuery(Q);
+			if (rs.next()) {
+				String capa = rs.getString("CATEGORY");
+				if(!capa.equals("V")) {
+					System.out.println("Invalid Permit");
+					return false;
+				}
+			}
+			else {
+				System.out.println("Invalid Permit");
+				return false;
+			}
+			
+			String QV = "SELECT * FROM VPERMITS WHERE PVNUMBER = '" + plate + "' AND LNAME ='" + lname + "'" ;
+
+			rs = statement.executeQuery(QV);
+			LocalDateTime late = null;
+			int hour = 0;
+			int minute = 0;
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			while (rs.next()) {
+				String exp = rs.getString("EXPDATE");
+				hour = rs.getInt("EXPHOUR");
+				minute = rs.getInt("EXPMINUTE");
+				
+				LocalDateTime t = LocalDateTime.parse(exp, formatter);
+				if(late != null) {
+					if(late.compareTo(t) < 0) {
+						late = t;
+					}
+				}
+				else {
+					late = t;
+				}
+			}				
+			late = late.plusHours(hour).plusMinutes(minute);
+			LocalDateTime current = LocalDateTime.now();
+			
+			if(current.compareTo(late) < 0) {
+				System.out.println("Expired Permit");
+				return false;
+			}
+			else return true;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		System.out.println("No Permit");
+		return false;
+	}
+
+	private static void addVtoE(String vid, String pid) {
+		// TODO Auto-generated method stub
+		try {
+			String Q = "SELECT COUNT(*) FROM EHASV WHERE PID = '" + pid + "'" ;
+
+			rs = statement.executeQuery(Q);
+			if (rs.next()) {
+				int capa = rs.getInt("COUNT(*)");
+				if(capa > 0) {
+					System.out.println("Maxium number of Car reached.");
+					return;
+				}
+			}
+			
+			String QV = "SELECT COUNT(*) FROM EHASV WHERE PLATE = '" + vid + "'" ;
+
+			rs = statement.executeQuery(QV);
+			if (rs.next()) {
+				int capaV = rs.getInt("COUNT(*)");
+				if(capaV > 0) {
+					System.out.println("Car had already been added.");
+					return;
+				}
+			}
+
+			String Query = "\nINSERT INTO EHASV VALUES('" + pid + "'," + "'" + vid + "')";
+			System.out.println(Query);
+			rs = statement.executeQuery(Query);
+			System.out.println("Parking Permit " + pid + " successfully assigned car " + vid);
+			System.out.println("----------------------------");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	private static void assignNEPermit(String plate, int uid, String zone, String vtype, String sdate) {
+		// TODO Auto-generated method stub
+		try {
+			String Q = "SELECT COUNT(*) FROM NEPERMITS";
+
+			rs = statement.executeQuery(Q);
+			int capa = 0;
+			if (rs.next()) {
+				capa = rs.getInt("COUNT(*)");
+
+			}
+			LocalDate date = LocalDate.parse(sdate);
+			DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+		      
+		    sdate = date.format(myFormatObj);
+		    String edate = date.plusMonths(4).format(myFormatObj); 
+			String hex = Integer.toHexString(capa);
+			String eid = "20" + zone;
+			int zs = 8 - eid.length() - hex.length();
+			for (int i = 0; i < zs; i++) {
+				eid = eid + 0;
+			}
+			eid = eid + hex;
+			String Query = "\nINSERT INTO EPERMITS VALUES('" + eid + "'," + "'" + plate + "'," + "'" + zone + "'," + "'" + vtype + "',"  + "'" + sdate + "'," + "'" + edate + "',0,0,23,59," + uid + ")";
+			System.out.println(Query);
+			rs = statement.executeQuery(Query);
+			System.out.println("Parking Permit for " + uid + " successfully assigned!");
+			System.out.println("----------------------------");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	private static void assignEPermit(String plate, int uid, String zone, String vtype, String sdate) {
+		try {
+			String Q = "SELECT COUNT(*) FROM EPERMITS";
+
+			rs = statement.executeQuery(Q);
+			int capa = 0;
+			if (rs.next()) {
+				capa = rs.getInt("COUNT(*)");
+
+			}
+			LocalDate date = LocalDate.parse(sdate);
+			DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+		      
+		    sdate = date.format(myFormatObj);
+		    String edate = date.plusDays(364).format(myFormatObj); 
+			String hex = Integer.toHexString(capa);
+			String eid = "20" + zone;
+			int zs = 8 - eid.length() - hex.length();
+			for (int i = 0; i < zs; i++) {
+				eid = eid + 0;
+			}
+			eid = eid + hex;
+			String Query = "\nINSERT INTO EPERMITS VALUES('" + eid + "'," + "'" + plate + "'," + "'" + zone + "'," + "'" + vtype + "',"  + "'" + sdate + "'," + "'" + edate + "',0,0,23,59," + uid + ")";
+			System.out.println(Query);
+			rs = statement.executeQuery(Query);
+			System.out.println("Parking Permit for " + uid + " successfully assigned!");
+			System.out.println("----------------------------");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	private static void addVehicle(String pid, String mfc, String mdl, int vy, String vc) {
+		try {
+			String Query = "\nINSERT INTO vehicles VALUES('" + pid + "'," + "'" + mfc + "'," + "'" + mdl + "'," + vy + ",'" + vc + "')\n";
+			System.out.println(Query);
+			rs = statement.executeQuery(Query);
+			System.out.println("Vehicle " + pid + " successfully added!");
+			System.out.println("----------------------------");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	private static void assignSpace(String lname, int snumber, String stype, String szone) {
+		try {
+			String Q = "SELECT TSPACE FROM LOTS WHERE LNAME = '" + lname + "'";
+			System.out.println(Q);
+			rs = statement.executeQuery(Q);
+			if (rs.next()) {
+				int capa = rs.getInt("TSPACE");
+				if (capa < snumber) {
+					System.out.println("Space Number exceeds limit!");
+					return;
+				}
+			}
+
+			String Query = "\nINSERT INTO SPACES VALUES('" + lname + "'," + snumber + ",'" + stype + "'," + "'" + szone
+					+ "', 0)\n";
+			System.out.println(Query);
+			rs = statement.executeQuery(Query);
+			System.out.println("Parking space " + lname + "#" + snumber + " successfully assigned!");
+			System.out.println("----------------------------");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private static void addZone(String zid) {
+		try {
+			String Query = "\nINSERT INTO ZONES VALUES('" + zid + "')\n";
+			System.out.println(Query);
+			rs = statement.executeQuery(Query);
+			System.out.println("Parking ZONE " + zid + " successfully created!");
+			System.out.println("----------------------------");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private static void zoneToLot(String lname, String zid) {
+		try {
+			String Query = "\nINSERT INTO LHASZ VALUES('" + zid + "'" + ",'" + lname + "')\n";
+			System.out.println(Query);
+			rs = statement.executeQuery(Query);
+			System.out.println("Parking Lot " + lname + " successfully assigned Zone " + zid + "!");
+			System.out.println("----------------------------");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	private static void addlot(String lname, String ladd, int ls, int lv, String lnotes) {
+		try {
+			String Query = "\nINSERT INTO LOTS VALUES('" + lname + "'" + ",'" + ladd + "'," + ls + "," + lv + ",'"
+					+ lnotes + "')\n";
+			System.out.println(Query);
+			rs = statement.executeQuery(Query);
+			System.out.println("Parking Lot " + lname + " successfully added.");
+			System.out.println("----------------------------");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 	
 	private static void calculateAllRevenue(String startDate, String endDate) throws SQLException {
