@@ -127,7 +127,7 @@ public class parking {
 	    	            	System.out.println("\n--------------------ASSIGN SPACE--------------------\n");
 	    	            	System.out.println("\nPlease enter the name of the parking lot");
 	    	            	String lname = in.nextLine();
-	    	            	System.out.println("\nPlease enter the # of the parking space");
+	    	            	//System.out.println("\nPlease enter the # of the parking space");
 	    	            	int snumber = 0;
 	    	            	while (snumber <= 0) {
 	    	            		System.out.println("\nPlease enter the # of the parking space");
@@ -138,6 +138,7 @@ public class parking {
 		    	            		System.out.println("Invalid input");
 		    	            	}
 	    	            	}
+	    	            	
 	    	            	System.out.println("\nPlease enter the type of the parking space");
 	    	            	String stype = in.nextLine();
 	    	            	System.out.println("\nPlease enter the ZONE ID of the parking space");
@@ -286,6 +287,12 @@ public class parking {
 	}
 	private static void assignSpace(String lname, int snumber, String stype, String szone) {
 		try {
+			rs = statement.executeQuery("SELECT TSPACE FROM LOTS WHERE LNAME ='" + lname + "')");
+			int capa = rs.getInt("TSPACE");
+			if(capa < snumber) {
+				System.out.println("Space Number exceeds limit!");
+				return;
+			}
 			String Query = "\nINSERT INTO SPACES VALUES('" + lname + "'," + snumber + ",'" + stype + "'," + "'" + szone + "', 0)\n";
 			System.out.println(Query);
             rs = statement.executeQuery(Query);
