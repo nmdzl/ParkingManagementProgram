@@ -696,7 +696,6 @@ public class parking {
             statement.executeUpdate("DROP TABLE NEPERMITS CASCADE CONSTRAINTS");
             statement.executeUpdate("DROP TABLE EHASV CASCADE CONSTRAINTS");
             statement.executeUpdate("DROP TABLE CITATION CASCADE CONSTRAINTS");
-            statement.executeUpdate("DROP TABLE SPACES CASCADE CONSTRAINTS");
             //statement.executeUpdate("SET FOREIGN_KEY_CHECKS=1;");
         } catch (Throwable err) {
             err.printStackTrace();
