@@ -276,12 +276,33 @@ public class parking {
 							}
 						}
 						if (s1.equals("6")) {
-							k = false;
-							break;
+							System.out.println("\n--------------------CHECK NVPARKING--------------------\n");
+							System.out.println("\nPlease enter the name of the parking lot");
+							String lname = in.nextLine();
+							
+							System.out.println("\nPlease enter the plate of the vehicle");
+							String plate = in.nextLine();
+							
+							if (checkNVV(lname,plate)) {
+								System.out.println("Valid Parking!");
+							} else {
+								System.out.println("Invalid Parking!");
+							}
 						}
 						if (s1.equals("7")) {
-							k = false;
-							break;
+							System.out.println("\n--------------------ISSUE CIATATION--------------------\n");				
+							System.out.println("\nPlease enter the plate of the vehicle");
+							String plate = in.nextLine();
+							System.out.println("\nPlease enter the Model of the vehicle");
+							String model = in.nextLine();
+							System.out.println("\nPlease enter the Color of the vehicle");
+							String color = in.nextLine();
+							System.out.println("\nPlease enter the name of the parking Lot");
+							String lname = in.nextLine();
+							System.out.println("\nPlease enter the category of the citation");
+							String cat = in.nextLine();
+							
+							addCitation(plate,model,color,lname,cat);
 						}
 					}
 				}
@@ -405,6 +426,112 @@ public class parking {
 		}
 	}
 
+	private static void addCitation(String plate, String model, String color, String lname, String cat) {
+		// TODO Auto-generated method stub
+		try {
+			String Q = "SELECT COUNT(*) FROM CITATION";
+
+			rs = statement.executeQuery(Q);
+			int capa = 0;
+			if (rs.next()) {
+				capa = rs.getInt("COUNT(*)");
+			}
+			String cid = "1";
+			LocalDateTime date = LocalDateTime.now();
+			DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+		    int chh = date.getHour();
+		    int cmm = date.getMinute();
+		    String sdate = date.format(myFormatObj);
+		    String ddate = date.plusMonths(1).format(myFormatObj); 
+			String hex = Integer.toHexString(capa);
+			int zs = 4 - hex.length();
+			for (int i = 0; i < zs; i++) {
+				cid = cid + 0;
+			}
+			int fee = 20;
+			if (cat.equals("Invalid Permit")) {
+				fee = 20;
+			}
+			else if(cat.equals("Expired Permit")) {
+				fee = 25;
+			}
+			else if(cat.equals("No Permit")) {
+				
+			}
+			cid = cid + hex;
+			String Query = "\nINSERT INTO CITATION VALUES('" + cid + "'," + "'" + plate + "'," + "'" + model + "'," + "'" + color + "',"  + "'" + sdate + "'," + "'" + lname + "'," + chh + "," + cmm + ",'" + cat +"'," + fee + ",'" + ddate + "',"+"'Unpaid" +"')";
+			System.out.println(Query);
+			rs = statement.executeQuery(Query);
+			System.out.println("Citation for " + plate + " successfully assigned!");
+			System.out.println("----------------------------");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	private static boolean checkNVV(String lname, String plate) {
+		// TODO Auto-generated method stub
+		try {
+			String Q = "SELECT COUNT(*) FROM EHASV WHERE PLATE = '" + plate + "'" ;
+
+			rs = statement.executeQuery(Q);
+			if (rs.next()) {
+				int capa = rs.getInt("COUNT(*)");
+				if(capa > 0) {
+					
+					return true;
+				}
+			}
+			
+			Q = "SELECT COUNT(*) FROM EPERMITS WHERE PLATE = '" + plate + "'" ;
+
+			rs = statement.executeQuery(Q);
+			if (rs.next()) {
+				int capa = rs.getInt("COUNT(*)");
+				if(capa > 0) {	
+					return true;
+				}
+			}
+			
+			String QV = "SELECT * FROM NEPERMITS WHERE PVNUMBER = '" + plate + "'" ;
+
+			rs = statement.executeQuery(QV);
+			LocalDateTime late = null;
+			int hour = 0;
+			int minute = 0;
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			while (rs.next()) {
+				String exp = rs.getString("ENDDATE");
+				hour = rs.getInt("EXPHOUR");
+				minute = rs.getInt("EXPMINUTE");
+				
+				LocalDateTime t = LocalDateTime.parse(exp, formatter);
+				if(late != null) {
+					if(late.compareTo(t) < 0) {
+						late = t;
+					}
+				}
+				else {
+					late = t;
+				}
+			}				
+			late = late.plusHours(hour).plusMinutes(minute);
+			LocalDateTime current = LocalDateTime.now();
+			
+			if(current.compareTo(late) < 0) {
+				System.out.println("Expired Permit");
+				return false;
+			}
+			else return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		System.out.println("No Permit");
+		return false;
+	}
+
 	private static boolean checkVV(String lname, int snumber, String plate) {
 		// TODO Auto-generated method stub
 		try {			
@@ -413,10 +540,12 @@ public class parking {
 			if (rs.next()) {
 				String capa = rs.getString("CATEGORY");
 				if(!capa.equals("V")) {
+					System.out.println("Invalid Permit");
 					return false;
 				}
 			}
 			else {
+				System.out.println("Invalid Permit");
 				return false;
 			}
 			
@@ -446,13 +575,16 @@ public class parking {
 			LocalDateTime current = LocalDateTime.now();
 			
 			if(current.compareTo(late) < 0) {
+				System.out.println("Expired Permit");
 				return false;
 			}
 			else return true;
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			
 		}
+		System.out.println("No Permit");
 		return false;
 	}
 
