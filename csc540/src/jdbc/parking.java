@@ -292,11 +292,14 @@ public class parking {
 			String Q = "SELECT TSPACE FROM LOTS WHERE LNAME = '" + lname + "'";
 			System.out.println(Q);
 			rs = statement.executeQuery(Q);
-			int capa = rs.getInt("TSPACE");
-			if (capa < snumber) {
-				System.out.println("Space Number exceeds limit!");
-				return;
+			if (rs.next()) {
+				int capa = rs.getInt("TSPACE");
+				if (capa < snumber) {
+					System.out.println("Space Number exceeds limit!");
+					return;
+				}
 			}
+
 			String Query = "\nINSERT INTO SPACES VALUES('" + lname + "'," + snumber + ",'" + stype + "'," + "'" + szone
 					+ "', 0)\n";
 			System.out.println(Query);
