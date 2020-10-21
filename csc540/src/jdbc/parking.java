@@ -18,8 +18,6 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Calendar;
 import java.util.Date;
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
 
 public class parking {
 
@@ -234,7 +232,12 @@ public class parking {
 	    	        String s1 = "";
 	    	        while (key) {
 	    	        	System.out.println("\n--------------------HELLO SAMPLE!--------------------\n");
-	    	        	System.out.println(" 0 - Show parking zone");
+				System.out.println(" 1 - Show the list of zones for each lot as tuple pairs");
+	    	        	System.out.println(" 2 - Get permit information for a given employee with UnivID: 1006020");
+	    	        	System.out.println(" 3 - Get vehicle information for a particular UnivID: 1006003");
+	    	        	System.out.println(" 4 - Find an available space# for Visitor for an electric vehicle in a specific parking lot: Justice Lot");
+	    	        	System.out.println(" 5 - Find any cars that are currently in violation");
+	    	        	System.out.println(" 6 - How many employees have permits for parking zone D");
 	    	            System.out.println(" m - Return to Main Menu");
 	    	            try {
 	    	            	System.out.println("\nEnter number to perform actions: ");
@@ -242,8 +245,23 @@ public class parking {
 	    	            } catch (Exception InputMismatchException ) {
 	    	                System.out.println("Invaild input, please try again");
 	    	            }
-	    	            if(s1.equals("0")) {
+			    if(s1.equals("1")) {
 	    	            	showzone();
+	    	            }
+	    	            if(s1.equals("2")) {
+	    	            	perminfo();
+	    	            }
+	    	            if(s1.equals("3")) {
+	    	            	vehinfo();
+	    	            }
+	    	            if(s1.equals("4")) {
+	    	            	availspace();
+	    	            }
+	    	            if(s1.equals("5")) {
+	    	            	viocar();
+	    	            }
+	    	            if(s1.equals("6")) {
+	    	            	empno();
 	    	            }
 	    	            if(s1.equals("m")) {
 	    	            	k = false;
