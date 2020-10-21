@@ -150,8 +150,63 @@ public class parking {
 							assignSpace(lname, snumber, stype, szone);
 						}
 						if (s1.equals("4")) {
-							k = false;
-							break;
+							while (true) {
+								System.out.println("\n--------------------ASSIGN PERMITS--------------------\n");
+								System.out.println(" 0 - Visitor Permit");
+								System.out.println(" 1 - Employee Permit");
+								System.out.println(" 2 - Student Permit");
+								System.out.println(" 3 - Add vehicle for existing Employee Permit");
+								System.out.println(" 4 - Add Vehicle");
+								System.out.println(" b - Back to ADMIN Menu");
+								try {
+									System.out.println("\nEnter number to perform actions: ");
+									s1 = in.nextLine();
+								} catch (Exception InputMismatchException) {
+									System.out.println("Invaild input, please try again");
+								}
+
+								if (s1.equals("b")) {
+									break;
+								}
+								if (s1.equals("0")) {
+									
+								}
+								if (s1.equals("1")) {
+
+								}
+								if (s1.equals("2")) {
+
+								}
+								if (s1.equals("3")) {
+
+								}
+								if (s1.equals("4")) {
+									System.out.println("\n--------------------ADD VEHICLE--------------------\n");
+									System.out.println("\nPlease enter the plate# of the vehicle");
+									String pid = in.nextLine();
+									System.out.println("\nPlease enter the Manufacture of the vehicle");
+									String mfc = in.nextLine();
+									System.out.println("\nPlease enter the Model of the vehicle");
+									String mdl = in.nextLine();
+									int vy = 0;
+									while (vy <= 1900 || vy >= 2021) {
+										System.out.println("\nPlease enter the Year of the vehicle");
+										String st = in.nextLine();
+										try {
+											vy = Integer.valueOf(st);
+										} catch (Exception e) {
+											System.out.println("Invalid input year");
+										}
+									}
+									System.out.println("\nPlease enter the color of the vehicle");
+									String vc = in.nextLine();
+									
+									addVehicle(pid,mfc,mdl,vy,vc);
+									
+								}
+
+							}
+
 						}
 						if (s1.equals("5")) {
 							k = false;
@@ -285,6 +340,19 @@ public class parking {
 				con.close();
 			}
 		}
+	}
+
+	private static void addVehicle(String pid, String mfc, String mdl, int vy, String vc) {
+		try {
+			String Query = "\nINSERT INTO vehicles VALUES('" + pid + "'," + "'" + mfc + "'," + "'" + mdl + "'," + vy + "'" + vc + "')\n";
+			System.out.println(Query);
+			rs = statement.executeQuery(Query);
+			System.out.println("Vehicle " + pid + " successfully added!");
+			System.out.println("----------------------------");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	private static void assignSpace(String lname, int snumber, String stype, String szone) {
