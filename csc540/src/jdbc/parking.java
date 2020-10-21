@@ -189,7 +189,7 @@ public class parking {
 		try {
 			Class.forName("oracle.jdbc.OracleDriver");
 
-			String user = "rwu5"; // For example, "jsmith"
+			String user = "bsun8"; // For example, "jsmith"
 			String passwd = "abcd1234"; // Your 9 digit student ID number
 
 				// Get a connection from the first driver in the
@@ -274,6 +274,7 @@ public class parking {
 			}
 		}
 	}
+	
     public static void dropAllTables() {
         try {
             System.out.println("drop all existing Table");
