@@ -289,7 +289,7 @@ public class parking {
 
 	private static void assignSpace(String lname, int snumber, String stype, String szone) {
 		try {
-			String Q = "SELECT TSPACE FROM LOTS WHERE LNAME = '" + lname + "';";
+			String Q = "SELECT TSPACE FROM LOTS WHERE LNAME = '" + lname + "'";
 			System.out.println(Q);
 			rs = statement.executeQuery(Q);
 			int capa = rs.getInt("TSPACE");
