@@ -27,7 +27,6 @@ public class parking {
 	private static Statement statement = null;
 	private static ResultSet rs = null;
 	private static Scanner in;
-	private static ResultSet rs = null;
 
 	public static void main(String[] args) throws SQLException {
 		try {
