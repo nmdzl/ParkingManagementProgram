@@ -122,3 +122,10 @@ INSERT INTO EHASV VALUES('20D0021D', 'RPU1824');
 
 INSERT INTO EHASV VALUES('20A0052A', 'KTP2003');
 
+INSERT INTO SPACES VALUES('Premiere Lot',200, 'Regular','Visitor',1);
+INSERT INTO SPACES VALUES('Justice Lot',160, 'Regular','Visitor',1);
+INSERT INTO SPACES VALUES('Justice Lot',151, 'Handicapped','Visitor',1);
+INSERT INTO SPACES VALUES('Justice Lot',173, 'Electric','Visitor',1);
+INSERT INTO SPACES VALUES('Justice Lot',153, 'Handicapped','Visitor',1);
+INSERT INTO SPACES VALUES('Premiere Lot',200, 'Regular','Visitor',1);
+
