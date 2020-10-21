@@ -9,6 +9,7 @@ JDBC program based on Orcale server database
 |Yiting Shen  |yshen22      |
 |Ruiwen Wu    |rwu5         |
 |Bo Sun       |bsun8        |
+|Zhaolin Ding |zding8       |
 
 ## Running Instruction
 - Log in remote.eos.ncsu.edu with NCSU credential using PuTTY
