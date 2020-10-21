@@ -84,27 +84,34 @@ public class parking {
 	    	            	String lname = in.nextLine();
 	    	            	System.out.println("\nPlease enter the address of the parking lot");
 	    	            	String ladd = in.nextLine();
-	    	            	int ls = 0;
-	    	            	while (ls <= 0) {
-	    	            		System.out.println("\nPlease enter the # of spaces of the parking lot");
-		    	            	String st = in.nextLine();
-		    	            	try {
-		    	            		ls = Integer.valueOf(st);
-		    	            	} catch (Exception e) {
-		    	            		System.out.println("Invalid input");
-		    	            	}
-	    	            	}
+	    	            	int ls = -2;
 	    	            	int lv = -1;
-	    	            	while (lv < 0) {
-	    	            		System.out.println("\nPlease enter the # of visitor spaces of the parking lot");
-		    	            	String st = in.nextLine();
-		    	            	try {
-		    	            		lv = Integer.valueOf(st);
-		    	            	} catch (Exception e) {
-		    	            		System.out.println("Invalid input");
-		    	            	}
-	    	            	}
+	    	            	while (lv > ls) {
 	    	            	
+	    	            		while (ls <= 0) {
+	    	            			System.out.println("\nPlease enter the # of spaces of the parking lot");
+	    	            			String st = in.nextLine();
+	    	            			try {
+	    	            				ls = Integer.valueOf(st);
+	    	            			} catch (Exception e) {
+	    	            				System.out.println("Invalid input");
+	    	            			}
+	    	            		}
+	    	            	
+	    	            		while (lv < 0) {
+	    	            			System.out.println("\nPlease enter the # of visitor spaces of the parking lot");
+	    	            			String st = in.nextLine();
+	    	            			try {
+	    	            				lv = Integer.valueOf(st);
+	    	            			} catch (Exception e) {
+	    	            				System.out.println("Invalid input");
+	    	            			}
+	    	            		}
+	    	            		
+	    	            		if (lv > ls) {
+	    	            			System.out.println("\nWarning! The visitor spaces cannot larger than the parking spaces!");
+	    	            		}
+	    	            	}
 	    	            	System.out.println("\nPlease enter the addition notes of the parking lot");
 	    	            	String lnotes = in.nextLine();
 	    	            	addlot(lname, ladd,ls,lv,lnotes);
@@ -287,7 +294,7 @@ public class parking {
 	}
 	private static void assignSpace(String lname, int snumber, String stype, String szone) {
 		try {
-			rs = statement.executeQuery("SELECT TSPACE FROM LOTS WHERE LNAME ='" + lname + "')");
+			rs = statement.executeQuery("SELECT TSPACE FROM LOTS WHERE LNAME ='" + lname + "');");
 			int capa = rs.getInt("TSPACE");
 			if(capa < snumber) {
 				System.out.println("Space Number exceeds limit!");
