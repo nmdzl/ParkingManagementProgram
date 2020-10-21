@@ -309,45 +309,56 @@ public class parking {
 					}
 				}
 	            
-	            //emp
-	            if(s.equals("1")) {
+	            //emp or student
+	            if(s.equals("1")||s.equals("2")) {
 	    	        boolean k = true;
 	    	        String s1 = "";
-	    	        while (key) {
-	    	        	System.out.println("\n--------------------HELLO EMP!--------------------\n");
-	    	            System.out.println(" m - Return to Main Menu");
+	    	        while (k) {
+	    	        	System.out.println("\n--------------------HELLO User!--------------------\n");
+	    	        	System.out.println(" 0 - Enter Lot");
+	    	        	System.out.println(" 1 - Exit Lot");
+	    	        	System.out.println(" 2 - Pay Citation");
+	    	        	System.out.println(" m - Return to Main Menu");
 	    	            try {
 	    	            	System.out.println("\nEnter number to perform actions: ");
 	    	            	s1 = in.nextLine();
 	    	            } catch (Exception InputMismatchException ) {
 	    	                System.out.println("Invaild input, please try again");
 	    	            }
+	    	            if(s1.equals("0")) {
+	    	            	Enterlot();
+	    	            }
+	    	            if(s1.equals("1")) {
+	    	            	Exitlot();
+	    	            }
+	    	            if(s1.equals("2")) {
+	    	            	Paycitation();
+	    	            }
 	    	            if(s1.equals("m")) {
 	    	            	k = false;
-	    	            	break;
 	    	            }
 	    	        }
 	            }
 	            
 	            //student
-	            if(s.equals("2")) {
-	    	        boolean k = true;
-	    	        String s1 = "";
-	    	        while (key) {
-	    	        	System.out.println("\n--------------------HELLO STUDENT!--------------------\n");
-	    	            System.out.println(" m - Return to Main Menu");
-	    	            try {
-	    	            	System.out.println("\nEnter number to perform actions: ");
-	    	            	s1 = in.nextLine();
-	    	            } catch (Exception InputMismatchException ) {
-	    	                System.out.println("Invaild input, please try again");
-	    	            }
-	    	            if(s1.equals("m")) {
-	    	            	k = false;
-	    	            	break;
-	    	            }
-	    	        }
-	            }
+//	            if(s.equals("2")) {
+//	    	        boolean k = true;
+//	    	        String s1 = "";
+//	    	        while (key) {
+//	    	        	System.out.println("\n--------------------HELLO STUDENT!--------------------\n");
+//	    	            System.out.println(" m - Return to Main Menu");
+//	    	            try {
+//	    	            	System.out.println("\nEnter number to perform actions: ");
+//	    	            	s1 = in.nextLine();
+//	    	            } catch (Exception InputMismatchException ) {
+//	    	                System.out.println("Invaild input, please try again");
+//	    	            }
+//	    	            if(s1.equals("m")) {
+//	    	            	k = false;
+//	    	            	break;
+//	    	            }
+//	    	        }
+//	            }
 	            
 	            //visitor
 	            if(s.equals("3")) {
@@ -396,7 +407,7 @@ public class parking {
 	    	            	int minute = mydate.getMinute();
 	    	            	int expirehour = hour + duration;
 	    	            	
-	    	            	
+	    	            	statement.executeUpdate("insert into Spaces values('"+lname+"',151,'"+type+"','V',1)");
 	    	            	statement.executeUpdate("insert into vpermits values('20V0066P','"+plate+"','V','"+type+"','"+date+"','"+date+"',"+hour+","+minute+","+expirehour+","+minute+","+duration+",151,'"+lname+"')");
 	    	            	//need to update about Start date and time, calculate the end time and date. 2.Generate pid & spacenum.
 //	    	            	rs = statement.executeQuery("select * from vpermits");
@@ -415,39 +426,10 @@ public class parking {
 //	    	        		}
 	    	            }
 	    	            if(s1.equals("1")) {
-	    	            	System.out.println("\n Please enter Name of Lot:");
-	    	            	String lname = in.nextLine();
-	    	            	System.out.println("\n Please enter Space Number:");
-	    	            	String number = in.nextLine();
-//	    	            	String lname = "Premiere Lot";
-//	    	            	String number = "200";
-	    	            	rs = statement.executeQuery("select category from SPACES where LOT='" + lname + "' AND sid =" + number);
-	    	            	if(rs.next()) {
-	    	            		String type = rs.getString("category");
-	    	            	
-	    	            	statement.executeUpdate("UPDATE SPACES set sstatus = 0 WHERE LOT='" + lname + "' AND sid = " + number);
-	    	            	if(type.equals("Visitor"))
-	    	            		statement.executeUpdate("update LOTS set VSPACE = VSPACE+1 where LNAME=" + lname);
-	    	            	else
-	    	            		statement.executeUpdate("update LOTS set TSPACE = TSPACE+1 where LNAME=" + lname);
-	    	            	}
+	    	            	Exitlot();
 	    	            }
 	    	            if(s1.equals("2")) {
-	    	            	System.out.println("\n Please enter Citation ID:");
-	    	            	String id = in.nextLine();
-	    	            	rs = statement.executeQuery("select * from citation where CID=" + id);
-	    	            	while (rs.next()) {
-	    	            		int a = rs.getInt("CID");
-	    	        		    String status = rs.getString("STATUS");
-	    	        		    System.out.println("Before payment: CID = " + a + "     Status = " + status);
-	    	        		}
-	    	            	statement.executeUpdate("update citation set status = 'paid' where CID=" + id);
-	    	            	rs = statement.executeQuery("select * from citation where CID=" + id);
-	    	            	while (rs.next()) {
-	    	            		int a = rs.getInt("CID");
-	    	        		    String status = rs.getString("STATUS");
-	    	        		    System.out.println("After payment: CID = " + a + "     Status = " + status);
-	    	        		}
+	    	            	Paycitation();
 	    	            }
 	    	            if(s1.equals("m")) {
 	    	            	k = false;
@@ -975,6 +957,75 @@ public class parking {
 
 	}
 	
+	//Function about Visitor % University User
+	private static void Paycitation() throws SQLException{
+		System.out.println("\n Please enter Citation ID:");
+    	String id = in.nextLine();
+    	rs = statement.executeQuery("select * from citation where CID=" + id);
+    	while (rs.next()) {
+    		int a = rs.getInt("CID");
+		    String status = rs.getString("STATUS");
+		    System.out.println("Before payment: CID = " + a + "     Status = " + status);
+		}
+    	statement.executeUpdate("update citation set status = 'paid' where CID=" + id);
+    	rs = statement.executeQuery("select * from citation where CID=" + id);
+    	while (rs.next()) {
+    		int a = rs.getInt("CID");
+		    String status = rs.getString("STATUS");
+		    System.out.println("After payment: CID = " + a + "     Status = " + status);
+		}
+	}
+	
+	private static void Enterlot() throws SQLException{
+		String type;
+		System.out.println("\n Please enter Name of Lot:");
+    	String lname = in.nextLine();
+    	System.out.println("\n Please enter Space Number:");
+    	String number = in.nextLine();
+//    	String lname = "Premiere Lot";
+//    	String number = "200";
+    	rs = statement.executeQuery("select category from SPACES where LOT='" + lname + "' AND sid =" + number);
+    	if(rs.next()) {
+    		type = rs.getString("category");
+    		statement.executeUpdate("UPDATE SPACES set sstatus = 1 WHERE LOT='" + lname + "' AND sid = " + number);        	
+    	}
+    	else {
+    		System.out.println("\n Please enter Category of Lot:");
+        	type = in.nextLine();
+        	statement.executeUpdate("INSERT INTO SPACES values('"+lname+"',"+number+",'Regular','"+type+"',1)");
+    	}
+    	if(type.equals("V"))
+    		statement.executeUpdate("update LOTS set VSPACE = VSPACE-1 where LNAME='" + lname+"'");
+    	else
+    		statement.executeUpdate("update LOTS set TSPACE = TSPACE-1 where LNAME='" + lname+"'");
+	}
+	
+	private static void Exitlot() throws SQLException{
+		String type;
+		System.out.println("\n Please enter Name of Lot:");
+    	String lname = in.nextLine();
+    	System.out.println("\n Please enter Space Number:");
+    	String number = in.nextLine();
+//    	String lname = "Premiere Lot";
+//    	String number = "200";
+    	rs = statement.executeQuery("select category from SPACES where LOT='" + lname + "' AND sid =" + number);
+    	if(rs.next()) {
+    		type = rs.getString("category");    	
+    		statement.executeUpdate("UPDATE SPACES set sstatus = 0 WHERE LOT='" + lname + "' AND sid = " + number);
+    	}
+    	else {
+    		System.out.println("\n Please enter Category of Lot:");
+        	type = in.nextLine();
+        	statement.executeUpdate("INSERT INTO SPACES values('"+lname+"',"+number+",'Regular','"+type+"',0)");
+    	}
+    	if(type.equals("V"))
+    		statement.executeUpdate("update LOTS set VSPACE = VSPACE+1 where LNAME='" + lname+"'");
+    	else
+    		statement.executeUpdate("update LOTS set TSPACE = TSPACE+1 where LNAME='" + lname+"'");    	
+	}
+	
+	
+	//
 	private static void calculateAllRevenue(String startDate, String endDate) throws SQLException {
 		try {
 			HashMap<Integer, Double> revenues = new HashMap<>();
@@ -1259,7 +1310,6 @@ public class parking {
             //statement.executeUpdate("SET FOREIGN_KEY_CHECKS=0;");
 
             statement.executeUpdate("DROP TABLE LOTS CASCADE CONSTRAINTS");
-            statement.executeUpdate("DROP TABLE SPACES CASCADE CONSTRAINTS");
             statement.executeUpdate("DROP TABLE ZONES CASCADE CONSTRAINTS");
             statement.executeUpdate("DROP TABLE LHASZ CASCADE CONSTRAINTS");
             statement.executeUpdate("DROP TABLE VEHICLES CASCADE CONSTRAINTS");
