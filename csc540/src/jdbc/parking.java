@@ -1322,6 +1322,7 @@ public class parking {
 			System.out.println("drop all existing Table");
 
 			statement.executeUpdate("DROP TABLE LOTS CASCADE CONSTRAINTS");
+			statement.executeUpdate("DROP TABLE SPACES CASCADE CONSTRAINTS");
 			statement.executeUpdate("DROP TABLE ZONES CASCADE CONSTRAINTS");
 			statement.executeUpdate("DROP TABLE LHASZ CASCADE CONSTRAINTS");
 			statement.executeUpdate("DROP TABLE VEHICLES CASCADE CONSTRAINTS");
