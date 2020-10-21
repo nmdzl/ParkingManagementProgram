@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Calendar;
 import java.util.Date;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
 
 public class parking {
 
@@ -445,6 +447,7 @@ public class parking {
 			e.printStackTrace();
 		}
 	}
+	
 	private static void showzone() throws SQLException {
 		try {
             rs = statement.executeQuery("SELECT * FROM LHASZ");
@@ -458,7 +461,125 @@ public class parking {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
-		
+	}
+	private static void perminfo() throws SQLException {
+		try {
+            rs = statement.executeQuery("SELECT EP.pid, H.plate, EP.zid, EP.pType, EP.startDate, EP.endDate, EP.startHour, EP.startMinute, EP.expHour, EP.expMinute "
+            		+ "FROM epermits EP, EhasV H "
+            		+ "WHERE EP.univid = 1006020 AND EP.pid = H.pid");
+		    System.out.println("UniqueID  CarLicense  ZoneID  SpaceType  StartTime  ExpTime");
+		    System.out.println("-----------------------------------------------------------------------------------------------------");
+    		while (rs.next()) {
+    		    String pid = rs.getString("PID");
+    		    String plate = rs.getString("PLATE");
+    		    String zid = rs.getString("ZID");
+    		    String ptype = rs.getString("PTYPE");
+    		    String sd = rs.getString("STARTDATE");
+    		    String ed = rs.getString("ENDDATE");
+    		    String sh = rs.getString("STARTHOUR");
+    		    String sm = rs.getString("STARTMINUTE");
+    		    String eh = rs.getString("EXPHOUR");
+    		    String em = rs.getString("EXPMINUTE");
+    		    
+    		    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    		    LocalDateTime startTime = LocalDateTime.parse(sd, formatter);
+    		    int startHr = Integer.parseInt(sh);
+    		    int startMin = Integer.parseInt(sm);
+    		    startTime = startTime.plusHours(startHr).plusMinutes(startMin);
+
+    		    LocalDateTime endTime = LocalDateTime.parse(ed, formatter);
+    		    int endHr = Integer.parseInt(eh);
+    		    int endMin = Integer.parseInt(em);
+    		    endTime = endTime.plusHours(endHr).plusMinutes(endMin);
+    		    System.out.println(pid + "   " + plate + "   " + zid + "   " + ptype + "   " + startTime + "   " + endTime);
+    		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
+	private static void vehinfo() throws SQLException {
+		try {
+            rs = statement.executeQuery("SELECT V.plate, V.carManf, V.carModel, V.carYear, V.carColor "
+            		+ "FROM vehicles V, nepermits EP "
+            		+ "WHERE EP.univid = 1006003 AND V.plate = EP.pvnumber");
+		    System.out.println("LicencePlate  Manufacturer  Model  Year  Color");
+		    System.out.println("-------------------------------------------------");
+    		while (rs.next()) {
+    		    String pl = rs.getString("PLATE");
+    		    String cma = rs.getString("CARMANF");
+    		    String cmo = rs.getString("CARMODEL");
+    		    String cy = rs.getString("CARYEAR");
+    		    String cc = rs.getString("CARCOLOR");
+    		    System.out.println(pl + "   " + cma + "   " + cmo + "   " + cy + "   " + cc);
+    		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
+	private static void availspace() throws SQLException {
+		try {
+            rs = statement.executeQuery("SELECT sid "
+            		+ "FROM SPACES "
+            		+ "WHERE LOT = 'Justice Lot' AND category = 'V' AND stype = 'Electric' AND sstatus = 0");
+		    System.out.println("Space #");
+		    System.out.println("----------------------------");
+    		while (rs.next()) {
+    		    String sid = rs.getString("SID");
+    		    System.out.println(sid);
+    		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
+	private static void viocar() throws SQLException {
+		try {
+            rs = statement.executeQuery("SELECT CID, CARNO, CMODEL, COLOR, CDATE, LNAME, CHH, CMM, VCAT, FEE, DUE "
+            		+ "FROM Citation "
+            		+ "WHERE STATUS = 'Unpaid'");
+		    System.out.println("UniqueCitation#  LicenseNumber  Model  Color  Time  Lot  ViolationCat  Fee  Due");
+		    System.out.println("-----------------------------------------------------------------------------------------");
+    		while (rs.next()) {
+    			String cid = rs.getString("CID");
+    			String cno = rs.getString("CARNO");
+    			String cmod = rs.getString("CMODEL");
+    			String co = rs.getString("COLOR");
+    			String cd = rs.getString("CDATE");
+    			String ln = rs.getString("LNAME");
+    			String ch = rs.getString("CHH");
+    			String cm = rs.getString("CMM");
+    			String vc = rs.getString("VCAT");
+    			String fee = rs.getString("FEE");
+    			String due = rs.getString("DUE");
+    			
+    			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    		    LocalDateTime cTime = LocalDateTime.parse(cd, formatter);
+    		    int cHr = Integer.parseInt(ch);
+    		    int cMin = Integer.parseInt(cm);
+    		    cTime = cTime.plusHours(cHr).plusMinutes(cMin);
+    		    
+    		    DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    		    LocalDateTime dDate = LocalDateTime.parse(due, formatter);
+    		    
+    		    System.out.println(cid + "   " + cno + "   " + cmod + "   " + co + "   " + cTime + "   " + ln + "   " + vc + "   " + fee + "   " + dDate);
+    		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
+	private static void empno() throws SQLException {
+		try {
+			rs = statement.executeQuery("SELECT COUNT(*) AS DNO "
+					+ "FROM epermits "
+					+ "WHERE zid = 'D'");
+			 System.out.println("Number of employees in Zone D");
+			 System.out.println("-------------------------------");
+			while (rs.next()) {
+				String dno = rs.getString("DNO");
+				System.out.println(dno);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	static void connectDB() throws IOException, SQLException {
 
