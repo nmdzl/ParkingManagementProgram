@@ -380,10 +380,12 @@ public class parking {
 						}
 						if (s1.equals("0")) {
 							try {
+								LocalDateTime mydate = LocalDateTime.now();
 								System.out.println("\n Please enter Plate of Car:");
 								String plate = in.nextLine();
 								rs = statement.executeQuery("select * from VEHICLES where plate='" + plate + "'");
 								if (!rs.next()) {
+									
 									System.out.println(" This plate hasn't enrolled, please provide more information.");
 									System.out.println("\nPlease enter the plate# of the vehicle");
 									String pid = in.nextLine();
@@ -392,7 +394,7 @@ public class parking {
 									System.out.println("\nPlease enter the Model of the vehicle");
 									String mdl = in.nextLine();
 									int vy = 0;
-									while (vy <= 1900 || vy >= 2021) {
+									while (vy <= 1900 || vy >= mydate.getYear()) {	
 										System.out.println("\nPlease enter the Year of the vehicle");
 										String st = in.nextLine();
 										try {
@@ -443,7 +445,7 @@ public class parking {
 								in.nextLine();
 								System.out.println("\n Please enter parking type:");
 								String type = in.nextLine();
-								LocalDateTime mydate = LocalDateTime.now();
+								
 								DateTimeFormatter myformat = DateTimeFormatter.ofPattern("dd-MMM-yy");
 								String date = mydate.format(myformat);
 								int hour = mydate.getHour();
@@ -1036,11 +1038,31 @@ public class parking {
 		String lname = in.nextLine();
 		System.out.println("\n Please enter Space Number:");
 		String number = in.nextLine();
+		try {
+			String Q = "SELECT TSPACE FROM LOTS WHERE LNAME = '" + lname + "'";
+			System.out.println(Q);
+			rs = statement.executeQuery(Q);
+			if (rs.next()) {
+				int capa = rs.getInt("TSPACE");
+				if (capa < Integer.parseInt(number)) {
+					System.out.println("Space Number exceeds limit!");
+					return;
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 //    	String lname = "Premiere Lot";
 //    	String number = "200";
 		rs = statement.executeQuery("select category from SPACES where LOT='" + lname + "' AND sid =" + number);
 		if (rs.next()) {
 			type = rs.getString("category");
+			int status = rs.getInt("sstatus");
+			if(status > 0) {
+				System.out.println("The space is occupied by others!");
+				return;
+			}
 			statement.executeUpdate("UPDATE SPACES set sstatus = 1 WHERE LOT='" + lname + "' AND sid = " + number);
 		} else {
 			System.out.println("\n Please enter Category of Lot:");
@@ -1060,11 +1082,31 @@ public class parking {
 		String lname = in.nextLine();
 		System.out.println("\n Please enter Space Number:");
 		String number = in.nextLine();
+		try {
+			String Q = "SELECT TSPACE FROM LOTS WHERE LNAME = '" + lname + "'";
+			System.out.println(Q);
+			rs = statement.executeQuery(Q);
+			if (rs.next()) {
+				int capa = rs.getInt("TSPACE");
+				if (capa < Integer.parseInt(number)) {
+					System.out.println("Space Number exceeds limit!");
+					return;
+				}
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 //    	String lname = "Premiere Lot";
 //    	String number = "200";
 		rs = statement.executeQuery("select category from SPACES where LOT='" + lname + "' AND sid =" + number);
 		if (rs.next()) {
 			type = rs.getString("category");
+			int status = rs.getInt("sstatus");
+			if(status < 1) {
+				System.out.println("The space is not occupied! Please enter a the correct space!");
+				return;
+			}
 			statement.executeUpdate("UPDATE SPACES set sstatus = 0 WHERE LOT='" + lname + "' AND sid = " + number);
 		} else {
 			System.out.println("\n Please enter Category of Lot:");
