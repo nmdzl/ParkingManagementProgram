@@ -410,8 +410,26 @@ public class parking {
 								}
 								System.out.println("\n Please enter Name of Lot:");
 								String lname = in.nextLine();
+								String Q = "SELECT TSPACE FROM LOTS WHERE LNAME = '" + lname + "'";
+								System.out.println(Q);
+								String hex = "";
+								int la = 0;
+								rs = statement.executeQuery(Q);
+								if (rs.next()) {
+									la = rs.getInt("TSPACE");
+								}
+								else {
+									System.out.println("No such Parking Lot!");
+									throw new NullPointerException();
+								}
+								String QV = "SELECT COUNT(*) FROM VPERMITS";
+								rs = statement.executeQuery(QV);
+								if (rs.next()) {
+									int capa = rs.getInt("COUNT(*)");
+									hex = Integer.toHexString(capa);
+								}
 								int snumber = 0;
-								while (snumber <= 0) {
+								while (snumber <= 0 ||snumber > la) {
 									System.out.println("\nPlease enter the # of the parking space");
 									String st = in.nextLine();
 									try {
@@ -420,27 +438,9 @@ public class parking {
 										System.out.println("Invalid input");
 									}
 								}
-								String hex = "";
+								
 								try {
-									String Q = "SELECT TSPACE FROM LOTS WHERE LNAME = '" + lname + "'";
-									System.out.println(Q);
-									rs = statement.executeQuery(Q);
-									if (rs.next()) {
-										int capa = rs.getInt("TSPACE");
-										if (capa < snumber) {
-											System.out.println("Space Number exceeds limit!");
-										}
-									}
-									else {
-										System.out.println("No such Parking Lot!");
-										throw new NullPointerException();
-									}
-									String QV = "SELECT COUNT(*) FROM VPERMITS";
-									rs = statement.executeQuery(QV);
-									if (rs.next()) {
-										int capa = rs.getInt("COUNT(*)");
-										hex = Integer.toHexString(capa);
-									}
+									
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
