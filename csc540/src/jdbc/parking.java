@@ -410,8 +410,27 @@ public class parking {
 								}
 								System.out.println("\n Please enter Name of Lot:");
 								String lname = in.nextLine();
+								String Q = "SELECT TSPACE FROM LOTS WHERE LNAME = '" + lname + "'";
+								System.out.println(Q);
+								String hex = "";
+								int la = 0;
+								rs = statement.executeQuery(Q);
+								if (rs.next()) {
+									la = rs.getInt("TSPACE");
+									System.out.println("\nTotal Spaces: " + la);
+								}
+								else {
+									System.out.println("No such Parking Lot!");
+									throw new NullPointerException();
+								}
+								String QV = "SELECT COUNT(*) FROM VPERMITS";
+								rs = statement.executeQuery(QV);
+								if (rs.next()) {
+									int capa = rs.getInt("COUNT(*)");
+									hex = Integer.toHexString(capa);
+								}
 								int snumber = 0;
-								while (snumber <= 0) {
+								while (snumber <= 0 ||snumber > la) {
 									System.out.println("\nPlease enter the # of the parking space");
 									String st = in.nextLine();
 									try {
@@ -420,23 +439,9 @@ public class parking {
 										System.out.println("Invalid input");
 									}
 								}
-								String hex = "";
+								
 								try {
-									String Q = "SELECT TSPACE FROM LOTS WHERE LNAME = '" + lname + "'";
-									System.out.println(Q);
-									rs = statement.executeQuery(Q);
-									if (rs.next()) {
-										int capa = rs.getInt("TSPACE");
-										if (capa < snumber) {
-											System.out.println("Space Number exceeds limit!");
-										}
-									}
-									String QV = "SELECT COUNT(*) FROM VPERMITS";
-									rs = statement.executeQuery(QV);
-									if (rs.next()) {
-										int capa = rs.getInt("COUNT(*)");
-										hex = Integer.toHexString(capa);
-									}
+									
 								} catch (Exception e) {
 									e.printStackTrace();
 								}
@@ -454,12 +459,16 @@ public class parking {
 								int year = mydate.getYear()-2000;
 								String vpid = year + "V";
 
-								int n = 8 - vpid.length() - hex.length();
+								int n = 8 - 3 - hex.length();
 								for (int i = 0; i < n; i++) {
 									vpid = vpid + "0";
 								}
 								vpid = vpid + hex;
-
+								String sy = "insert into vpermits values('" + vpid + "'" + ",'" + plate
+										+ "','V','" + type + "','" + date + "','" + date + "'," + hour + "," + minute
+										+ "," + expirehour + "," + minute + "," + duration + "," + snumber + ",'"
+										+ lname + "')";
+								System.out.println(sy);
 								statement.executeUpdate("insert into Spaces values('" + lname + "'," + snumber + ",'"
 										+ type + "','V',1)");
 								statement.executeUpdate("insert into vpermits values('" + vpid + "'" + ",'" + plate
@@ -1057,7 +1066,7 @@ public class parking {
 		}
 //    	String lname = "Premiere Lot";
 //    	String number = "200";
-		rs = statement.executeQuery("select category from SPACES where LOT='" + lname + "' AND sid =" + number);
+		rs = statement.executeQuery("select * from SPACES where LOT='" + lname + "' AND sid =" + number);
 		if (rs.next()) {
 			type = rs.getString("category");
 			int status = rs.getInt("sstatus");
@@ -1101,7 +1110,10 @@ public class parking {
 		}
 //    	String lname = "Premiere Lot";
 //    	String number = "200";
+		String q = "select category from SPACES where LOT='" + lname + "' AND sid =" + number;
+		System.out.println(q);
 		rs = statement.executeQuery("select * from SPACES where LOT='" + lname + "' AND sid =" + number);
+		
 		if (rs.next()) {
 			type = rs.getString("category");
 			int status = rs.getInt("sstatus");
