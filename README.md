@@ -17,6 +17,7 @@ JDBC program based on Orcale server database
 - > $ add oracle11
 - > $ export CLASSPATH=.:/afs/eos.ncsu.edu/software/oracle11/app/product/11.2.0/client_1/jdbc/lib/ojdbc5.jar
 - > $ add jdk
+- > $ cd CSC540P1/csc540/src/jdbc/
 - > $ javac parking.java
 - > $ java parking
 
