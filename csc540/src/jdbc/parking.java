@@ -458,7 +458,11 @@ public class parking {
 								for (int i = 0; i < n; i++) {
 									vpid = vpid + "0";
 								}
-
+								String sy = "insert into vpermits values('" + vpid + "'" + ",'" + plate
+										+ "','V','" + type + "','" + date + "','" + date + "'," + hour + "," + minute
+										+ "," + expirehour + "," + minute + "," + duration + "," + snumber + ",'"
+										+ lname + "')";
+								System.out.println(sy);
 								statement.executeUpdate("insert into Spaces values('" + lname + "'," + snumber + ",'"
 										+ type + "','V',1)");
 								statement.executeUpdate("insert into vpermits values('" + vpid + "'" + ",'" + plate
