@@ -1195,6 +1195,7 @@ public class parking {
 	private static void showzone() throws SQLException {
 		try {
 			rs = statement.executeQuery("SELECT * FROM LHASZ");
+			System.out.println("\nSELECT * FROM LHASZ\n");
 			System.out.println("Zone    Parking Lot");
 			System.out.println("----------------------------");
 			while (rs.next()) {
@@ -1212,6 +1213,8 @@ public class parking {
 			rs = statement.executeQuery(
 					"SELECT EP.pid, H.plate, EP.zid, EP.pType, EP.startDate, EP.endDate, EP.startHour, EP.startMinute, EP.expHour, EP.expMinute "
 							+ "FROM epermits EP, EhasV H " + "WHERE EP.univid = 1006020 AND EP.pid = H.pid");
+			System.out.println("\nSELECT EP.pid, H.plate, EP.zid, EP.pType, EP.startDate, EP.endDate, EP.startHour, EP.startMinute, EP.expHour, EP.expMinute "
+					+ "FROM epermits EP, EhasV H " + "WHERE EP.univid = 1006020 AND EP.pid = H.pid\n");
 			System.out.println("UniqueID  CarLicense  ZoneID  SpaceType  StartTime  ExpTime");
 			System.out.println(
 					"-----------------------------------------------------------------------------------------------------");
@@ -1249,6 +1252,8 @@ public class parking {
 		try {
 			rs = statement.executeQuery("SELECT V.plate, V.carManf, V.carModel, V.carYear, V.carColor "
 					+ "FROM vehicles V, nepermits EP " + "WHERE EP.univid = 1006003 AND V.plate = EP.pvnumber");
+			System.out.println("\nSELECT V.plate, V.carManf, V.carModel, V.carYear, V.carColor "
+					+ "FROM vehicles V, nepermits EP " + "WHERE EP.univid = 1006003 AND V.plate = EP.pvnumber\n");
 			System.out.println("LicencePlate  Manufacturer  Model  Year  Color");
 			System.out.println("-------------------------------------------------");
 			while (rs.next()) {
@@ -1268,6 +1273,8 @@ public class parking {
 		try {
 			rs = statement.executeQuery("SELECT sid " + "FROM SPACES "
 					+ "WHERE LOT = 'Justice Lot' AND category = 'V' AND stype = 'Electric' AND sstatus = 0");
+			System.out.println("\nSELECT sid " + "FROM SPACES "
+					+ "WHERE LOT = 'Justice Lot' AND category = 'V' AND stype = 'Electric' AND sstatus = 0\n");
 			System.out.println("Space #");
 			System.out.println("----------------------------");
 			while (rs.next()) {
@@ -1283,6 +1290,8 @@ public class parking {
 		try {
 			rs = statement.executeQuery("SELECT CID, CARNO, CMODEL, COLOR, CDATE, LNAME, CHH, CMM, VCAT, FEE, DUE "
 					+ "FROM Citation " + "WHERE STATUS = 'Unpaid'");
+			System.out.println("\nSELECT CID, CARNO, CMODEL, COLOR, CDATE, LNAME, CHH, CMM, VCAT, FEE, DUE "
+					+ "FROM Citation " + "WHERE STATUS = 'Unpaid'\n");
 			System.out.println("UniqueCitation#  LicenseNumber  Model  Color  Time  Lot  ViolationCat  Fee  Due");
 			System.out.println(
 					"-----------------------------------------------------------------------------------------");
@@ -1319,6 +1328,7 @@ public class parking {
 	private static void empno() throws SQLException {
 		try {
 			rs = statement.executeQuery("SELECT COUNT(*) AS DNO " + "FROM epermits " + "WHERE zid = 'D'");
+			System.out.println("\nSELECT COUNT(*) AS DNO " + "FROM epermits " + "WHERE zid = 'D'\n");
 			System.out.println("Number of employees in Zone D");
 			System.out.println("-------------------------------");
 			while (rs.next()) {
