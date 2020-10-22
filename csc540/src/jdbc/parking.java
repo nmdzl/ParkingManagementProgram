@@ -1101,7 +1101,7 @@ public class parking {
 		}
 //    	String lname = "Premiere Lot";
 //    	String number = "200";
-		rs = statement.executeQuery("select category from SPACES where LOT='" + lname + "' AND sid =" + number);
+		rs = statement.executeQuery("select * from SPACES where LOT='" + lname + "' AND sid =" + number);
 		if (rs.next()) {
 			type = rs.getString("category");
 			int status = rs.getInt("sstatus");
