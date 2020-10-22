@@ -29,16 +29,15 @@ public class parking {
 			String s = "";
 			System.out.println("Wanna Drop All Tables?(Y/N)");
 			s = in.nextLine();
-			if(s.equalsIgnoreCase("Y")) {
+			if (s.equalsIgnoreCase("Y")) {
 				dropAllTables();
 			}
-			
-			
+
 			setup();
 			// menu
-			
+
 			boolean key = true;
-			
+
 			while (key) {
 				System.out.println("#####################################################");
 				System.out.println("##                                                 ##");
@@ -379,44 +378,92 @@ public class parking {
 							System.out.println("Invaild input, please try again");
 						}
 						if (s1.equals("0")) {
-							System.out.println("\n Please enter Plate of Car:");
-							String plate = in.nextLine();
-							rs = statement.executeQuery("select * from VEHICLES where plate='" + plate + "'");
-							if (!rs.next()) {
-								System.out.println(" This plate hasn't enrolled, please provide more information.");
-								System.out.println(" Please enter Manufacturer:");
-								String manf = in.nextLine();
-								System.out.println(" Please enter Model:");
-								String model = in.nextLine();
-								System.out.println("\n Please enter Year of car:");
-								Integer cyear = in.nextInt();
-								in.nextLine();
-								System.out.println("\n Please enter color of car:");
-								String color = in.nextLine();
-								statement.executeUpdate("insert into vehicles values('" + plate + "','" + manf + "','"
-										+ model + "'," + cyear + ",'" + color + "')");
-							}
-							System.out.println("\n Please enter Name of Lot:");
-							String lname = in.nextLine();
-							System.out.println("\n Please enter duration of reservation:");
-							Integer duration = in.nextInt();
-							in.nextLine();
-							System.out.println("\n Please enter parking type:");
-							String type = in.nextLine();
-							LocalDateTime mydate = LocalDateTime.now();
-							DateTimeFormatter myformat = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
-							String date = mydate.format(myformat);
-							int hour = mydate.getHour();
-							int minute = mydate.getMinute();
-							int expirehour = hour + duration;
+							try {
+								System.out.println("\n Please enter Plate of Car:");
+								String plate = in.nextLine();
+								rs = statement.executeQuery("select * from VEHICLES where plate='" + plate + "'");
+								if (!rs.next()) {
+									System.out.println(" This plate hasn't enrolled, please provide more information.");
+									System.out.println("\nPlease enter the plate# of the vehicle");
+									String pid = in.nextLine();
+									System.out.println("\nPlease enter the Manufacture of the vehicle");
+									String mfc = in.nextLine();
+									System.out.println("\nPlease enter the Model of the vehicle");
+									String mdl = in.nextLine();
+									int vy = 0;
+									while (vy <= 1900 || vy >= 2021) {
+										System.out.println("\nPlease enter the Year of the vehicle");
+										String st = in.nextLine();
+										try {
+											vy = Integer.valueOf(st);
+										} catch (Exception e) {
+											System.out.println("Invalid input year");
+										}
+									}
+									System.out.println("\nPlease enter the color of the vehicle");
+									String vc = in.nextLine();
 
-							statement.executeUpdate(
-									"insert into Spaces values('" + lname + "',151,'" + type + "','V',1)");
-							statement.executeUpdate("insert into vpermits values('20V0066P','" + plate + "','V','"
-									+ type + "','" + date + "','" + date + "'," + hour + "," + minute + "," + expirehour
-									+ "," + minute + "," + duration + ",151,'" + lname + "')");
-							// need to update about Start date and time, calculate the end time and date.
-							// 2.Generate pid & spacenum.
+									addVehicle(pid, mfc, mdl, vy, vc);
+								}
+								System.out.println("\n Please enter Name of Lot:");
+								String lname = in.nextLine();
+								int snumber = 0;
+								while (snumber <= 0) {
+									System.out.println("\nPlease enter the # of the parking space");
+									String st = in.nextLine();
+									try {
+										snumber = Integer.valueOf(st);
+									} catch (Exception e) {
+										System.out.println("Invalid input");
+									}
+								}
+								String hex = "";
+								try {
+									String Q = "SELECT TSPACE FROM LOTS WHERE LNAME = '" + lname + "'";
+									System.out.println(Q);
+									rs = statement.executeQuery(Q);
+									if (rs.next()) {
+										int capa = rs.getInt("TSPACE");
+										if (capa < snumber) {
+											System.out.println("Space Number exceeds limit!");
+										}
+									}
+									String QV = "SELECT COUNT(*) FROM VPERMITS";
+									rs = statement.executeQuery(Q);
+									if (rs.next()) {
+										int capa = rs.getInt("COUNT(*)");
+										hex = Integer.toHexString(capa);
+									}
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+								System.out.println("\n Please enter duration of reservation:");
+								Integer duration = in.nextInt();
+								in.nextLine();
+								System.out.println("\n Please enter parking type:");
+								String type = in.nextLine();
+								LocalDateTime mydate = LocalDateTime.now();
+								DateTimeFormatter myformat = DateTimeFormatter.ofPattern("dd-MMM-yy");
+								String date = mydate.format(myformat);
+								int hour = mydate.getHour();
+								int minute = mydate.getMinute();
+								int expirehour = hour + duration;
+								String vpid = mydate.getYear() + "V";
+
+								int n = 8 - 3 - hex.length();
+								for (int i = 0; i < n; i++) {
+									vpid = vpid + "0";
+								}
+
+								statement.executeUpdate("insert into Spaces values('" + lname + "'," + snumber + ",'"
+										+ type + "','V',1)");
+								statement.executeUpdate("insert into vpermits values('" + vpid + "'" + ",'" + plate
+										+ "','V','" + type + "','" + date + "','" + date + "'," + hour + "," + minute
+										+ "," + expirehour + "," + minute + "," + duration + "," + snumber + ",'"
+										+ lname + "')");
+								System.out.println("Visitor Permit " + vpid + " has been successfully assigned!");
+								// need to update about Start date and time, calculate the end time and date.
+								// 2.Generate pid & spacenum.
 //	    	            	rs = statement.executeQuery("select * from vpermits");
 //	    	            	 System.out.println("Permit ID	|	plate	|	category	|	type	|	start date & time	|	end date &time	|	duration	|	space NO	|	Lot name");
 //	    	            	while (rs.next()) {
@@ -430,7 +477,9 @@ public class parking {
 //	    	        		    String spacenum = rs.getString("spaceNum");
 //	    	        		    String lot = rs.getString("lname");
 //	    	        		   	System.out.println("	"+permitid+"	"+plate2+"	"+category+"	"+type2+"	"+startdate+"	"+enddate+"	"+dur+"	"+spacenum+"	"+lot);
-//	    	        		}
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 						}
 						if (s1.equals("1")) {
 							Exitlot();
@@ -492,7 +541,8 @@ public class parking {
 					String s1 = "";
 					while (key) {
 						System.out.println("\n--------------------HELLO REPORT!--------------------\n");
-						System.out.println(" 1 - Report the number of citations in all lots for a three month period (07/01/2020 - 09/30/2020)");
+						System.out.println(
+								" 1 - Report the number of citations in all lots for a three month period (07/01/2020 - 09/30/2020)");
 						System.out.println(" 2 - Report the number of visitor permits of different permit type");
 						System.out.println(" 3 - Report the total revenue generated for all visitor's parking zones");
 						System.out.println(" m - Return to Main Menu");
@@ -858,12 +908,12 @@ public class parking {
 
 			}
 			LocalDate date = LocalDate.parse(sdate);
-			DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
+			DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MMM-yy");
 
 			sdate = date.format(myFormatObj);
 			String edate = date.plusDays(364).format(myFormatObj);
 			String hex = Integer.toHexString(capa);
-			String eid = "20" + zone;
+			String eid = date.getYear() + zone;
 			int zs = 8 - eid.length() - hex.length();
 			for (int i = 0; i < zs; i++) {
 				eid = eid + 0;
