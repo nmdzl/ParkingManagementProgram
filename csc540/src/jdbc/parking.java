@@ -432,7 +432,7 @@ public class parking {
 										}
 									}
 									String QV = "SELECT COUNT(*) FROM VPERMITS";
-									rs = statement.executeQuery(Q);
+									rs = statement.executeQuery(QV);
 									if (rs.next()) {
 										int capa = rs.getInt("COUNT(*)");
 										hex = Integer.toHexString(capa);
@@ -453,10 +453,11 @@ public class parking {
 								int expirehour = hour + duration;
 								String vpid = mydate.getYear() + "V";
 
-								int n = 8 - 3 - hex.length();
+								int n = 8 - vpid.length() - hex.length();
 								for (int i = 0; i < n; i++) {
 									vpid = vpid + "0";
 								}
+								vpid = vpid + hex;
 
 								statement.executeUpdate("insert into Spaces values('" + lname + "'," + snumber + ",'"
 										+ type + "','V',1)");
