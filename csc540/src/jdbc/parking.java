@@ -431,6 +431,10 @@ public class parking {
 											System.out.println("Space Number exceeds limit!");
 										}
 									}
+									else {
+										System.out.println("No such Parking Lot!");
+										throw new NullPointerException();
+									}
 									String QV = "SELECT COUNT(*) FROM VPERMITS";
 									rs = statement.executeQuery(QV);
 									if (rs.next()) {
