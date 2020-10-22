@@ -462,6 +462,7 @@ public class parking {
 								for (int i = 0; i < n; i++) {
 									vpid = vpid + "0";
 								}
+								vpid = vpid + hex;
 								String sy = "insert into vpermits values('" + vpid + "'" + ",'" + plate
 										+ "','V','" + type + "','" + date + "','" + date + "'," + hour + "," + minute
 										+ "," + expirehour + "," + minute + "," + duration + "," + snumber + ",'"
