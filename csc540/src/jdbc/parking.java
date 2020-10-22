@@ -237,7 +237,8 @@ public class parking {
 									System.out.println("\nPlease enter the Model of the vehicle");
 									String mdl = in.nextLine();
 									int vy = 0;
-									while (vy <= 1900 || vy >= 2021) {
+									LocalDateTime mydate = LocalDateTime.now();
+									while (vy <= 1900 || vy >= mydate.getYear()) {
 										System.out.println("\nPlease enter the Year of the vehicle");
 										String st = in.nextLine();
 										try {
