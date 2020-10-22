@@ -417,7 +417,7 @@ public class parking {
 								rs = statement.executeQuery(Q);
 								if (rs.next()) {
 									la = rs.getInt("TSPACE");
-									System.out.println("\nTotal Spaces: la");
+									System.out.println("\nTotal Spaces: " + la);
 								}
 								else {
 									System.out.println("No such Parking Lot!");
@@ -1066,7 +1066,7 @@ public class parking {
 		}
 //    	String lname = "Premiere Lot";
 //    	String number = "200";
-		rs = statement.executeQuery("select category from SPACES where LOT='" + lname + "' AND sid =" + number);
+		rs = statement.executeQuery("select * from SPACES where LOT='" + lname + "' AND sid =" + number);
 		if (rs.next()) {
 			type = rs.getString("category");
 			int status = rs.getInt("sstatus");
@@ -1112,7 +1112,7 @@ public class parking {
 //    	String number = "200";
 		String q = "select category from SPACES where LOT='" + lname + "' AND sid =" + number;
 		System.out.println(q);
-		rs = statement.executeQuery("select category from SPACES where LOT='" + lname + "' AND sid =" + number);
+		rs = statement.executeQuery("select * from SPACES where LOT='" + lname + "' AND sid =" + number);
 		
 		if (rs.next()) {
 			type = rs.getString("category");
