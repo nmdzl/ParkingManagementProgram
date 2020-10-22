@@ -451,7 +451,8 @@ public class parking {
 								int hour = mydate.getHour();
 								int minute = mydate.getMinute();
 								int expirehour = hour + duration;
-								String vpid = mydate.getYear() + "V";
+								int year = mydate.getYear()-2000;
+								String vpid = year + "V";
 
 								int n = 8 - vpid.length() - hex.length();
 								for (int i = 0; i < n; i++) {
